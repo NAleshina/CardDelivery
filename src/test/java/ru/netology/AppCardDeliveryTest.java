@@ -3,6 +3,8 @@ package ru.netology;
 import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,13 +18,11 @@ public class AppCardDeliveryTest {
 
     @Test
     void shouldCardDeliveryWithAllData() {
-        LocalDate dateNow = LocalDate.now();
-        dateNow = dateNow.plusDays(10);
-        DateTimeFormatter formatForDateNow = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String dateToEnter = LocalDate.now().plusDays(10).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue("Нарьян-Мар");
-        JavascriptExecutor js = (JavascriptExecutor)getWebDriver();
-        js.executeScript("document.querySelector('.calendar-input__custom-control input.input__control').value = '" + formatForDateNow.format(dateNow) + "'");
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input.input__control").setValue(dateToEnter);
         $("[name='name']").setValue("Кавендиш Генри");
         $("[name='phone']").setValue("+71112223344");
         $("[class=checkbox__box]").click();
